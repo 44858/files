@@ -1,5 +1,6 @@
 import pickle
-games = [] 
+games = []
+
 class Games:
     def __init__(self):
         self.name = None
@@ -8,28 +9,27 @@ class Games:
         self.cost = None
         self.no_of_players = None
         self.online_functionality = None
+
+filename = None      
 def load_games(filename):
-    with open("games.txt", moder="r", encoding="utf-8"):
-        
+    with open(filename, mode="r", encoding="utf-8")as game_file:
+         games = pickle.load(game_file)
+         filename = "games.dat"
     pass
 
-def save_games(filename, games):
-    with open("games.txt", mode="w", encoding="utf-8"):
-        pickle.dump(games)    
+def save_games(games):
+    with open("games.dat", mode="w", encoding="utf-8"):
+        pickle.dump(games)
+        filename = "games.dat"
     pass
 
 #the parameter is games because eventually you will be displaying
 #multiple games using this function
 def display_games(games):
-    length = len(games)
-    for count in range(length):
+    for game in games:
         print("-"*25)
-        print("| Name | {0} |".format(new_game.name))
-        print("| Platform | {0} |".format(new_game.platform))
-        print("| Genre | {0} |".format(new_game.genre))
-        print("| Cost | {0} |".format(new_game.cost))
-        print("| Players | {0} |".format(new_game.no_of_players))
-        print("| Online | {0} |".format(new_game.online_functionality))
+        print("
+        
     pass
 
 def get_game_from_user(games):
@@ -58,7 +58,7 @@ def display_menu():
     print()
 
 def main():
-    load_games()
+    load_games(filename)
     exit_program = False
     while not exit_program:
         try:
@@ -69,7 +69,7 @@ def main():
                pass
             elif selected_option == 2:
                  display_games(games)
-                pass
+                 pass
             elif selected_option == 3:
                  save_games(filename, games)
                  exit_program = True

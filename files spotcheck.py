@@ -1,5 +1,4 @@
 import pickle
-games = []
 
 class Games:
     def __init__(self):
@@ -10,44 +9,48 @@ class Games:
         self.no_of_players = None
         self.online_functionality = None
 
-filename = None      
+    
 def load_games(filename):
-    with open(filename, mode="r", encoding="utf-8")as game_file:
-         games = pickle.load(game_file)
-         filename = "games.dat"
-    pass
-
-def save_games(games):
-    with open("games.dat", mode="w", encoding="utf-8"):
-        pickle.dump(games)
-        filename = "games.dat"
-    pass
-
+    try:
+        with open(filename, mode="rb")as game_file:
+             games = pickle.load(game_file)
+             return games
+    except FileNotFoundError and EOFError:
+        print("File cannot be found.")
+    
+def save_games(filename, games_list):
+    with open(filename, mode="wb"):
+        pickle.dump(games_list)
+        
 #the parameter is games because eventually you will be displaying
 #multiple games using this function
-def display_games(games):
+def display_games(games_list):
+    print("-"*30)
     for game in games:
-        print("-"*25)
-        print("
-        
-    pass
-
+        print("|Name                |{0:>5}|".format(new_game.name))
+        print("|Platform            |{0:>5}|".format(new_game.platform))
+        print("|Genre               |{0:>5}|".format(new_game.genre))
+        print("|Cost                |{0:>5}|".format(new_game.genre))
+        print("|No. of players      |{0:>5}|".format(new_game.no_of_players))
+        print("|Online Functionality|{0:>5}|".format(new_game.online_functionality))
+        print("-"*30)
+                    
 def get_game_from_user(games):
+    games_list = []
     done = False
     while done == False:
-        new_game = Games()
-        new_game.name = input("Please enter the name of the game(enter -1 to end): ")
-        if new_game.name == "-1":
-            done = True    
-        new_game.platform = input("Please enter the platform of the game: ")
-        new_game.genre = input("Please enter the genre of the game: ")
-        new_game.cost = input("Please enter the cost of the game in pounds: ")
-        new_game.no_of_players = input("Please enter the number of players: ")
-        new_game.online_functionality = input("Does the game have online functionality?: ")
-        games.append(new_game)
-    return games      
-    pass
-
+       new_game = Games()
+       new_game.name = input("Name: ")
+       if new_game.name == "-1":
+           done = True
+       new_game.platform = input("Platform: ")
+       new_game.genre = input("Genre: ")
+       new_game.cost = input("Cost(in pounds): ")
+       new_game.no_of_players = input("No. of players: ")
+       new_game.online_functionality = input("Online functionality: ")
+       games_list.append(Games())
+    return games_list 
+    
 def display_menu():
     print()
     print("***Welcome to the Computer and Video Game Database***")
@@ -58,7 +61,8 @@ def display_menu():
     print()
 
 def main():
-    load_games(filename)
+    filename = input("Please enter a filename: ")
+    games = load_games(filename)
     exit_program = False
     while not exit_program:
         try:
@@ -66,14 +70,11 @@ def main():
             selected_option = int(input("Please select a menu option: "))
             if selected_option == 1:
                get_game_from_user(games)
-               pass
             elif selected_option == 2:
                  display_games(games)
-                 pass
             elif selected_option == 3:
                  save_games(filename, games)
                  exit_program = True
-                 pass
             else:
                  print("Please enter a valid option (1-3)")
                  print()
